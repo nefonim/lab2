@@ -17,6 +17,7 @@ class Student {
 
 public:
 	Student(std::string name, uint16_t group);
+	Student(Student &&);
 	~Student();
 
 	const std::string &get_name() const;
@@ -25,6 +26,9 @@ public:
 
 	void set_grade(std::string discipline, Grade grade);
 	void erase_grade(const std::string &discipline);
+
+	void operator+=(std::pair<std::string, Grade> discipline_grade);
+	void operator-=(const std::string &discipline);
 
 	bool is_bad() const;
 	std::partial_ordering operator<=>(const Student &other) const;

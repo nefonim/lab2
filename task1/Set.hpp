@@ -1,11 +1,11 @@
 #include <iostream>
 #include <sys/types.h>
-#include <concepts>
+// #include <concepts>
 #include <algorithm>
 #include <cstdint>
 
 template<class T>
-requires std::totally_ordered<T>
+// requires std::totally_ordered<T>
 class Set {
 	struct Node {
 		Node *parent = nullptr;
@@ -219,7 +219,7 @@ public:
 	void insert(T value)
 	{
 		if (!this->root) {
-			this->root = new Node { .value = value };
+			this->root = new Node { .value = std::move(value) };
 			return;
 		}
 		Node *parent = nullptr;
@@ -228,7 +228,7 @@ public:
 			parent = node;
 			node = value < node->value ? node->left : node->right;
 		}
-		node = new Node { .parent = parent, .value = value };
+		node = new Node { .parent = parent, .value = std::move(value) };
 		if (value < parent->value) {
 			parent->left = node;
 		} else {

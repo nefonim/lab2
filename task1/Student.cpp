@@ -8,8 +8,20 @@ Student::Student(std::string name, uint16_t group)
 	          << ", группа " << group << '\n';
 }
 
+Student::Student(Student &&rvalue)
+:	name(std::move(rvalue.name))
+,	group(rvalue.group)
+,	subjects(std::move(rvalue.subjects))
+,	len(rvalue.len)
+,	cap(rvalue.cap)
+,	average(rvalue.average)
+,	d_grades(rvalue.d_grades)
+{}
+
 Student::~Student()
 {
+	if (this->name.empty())
+		return;
 	std::cerr << "Уничтожен студент " << this->name
 	          << ", группа " << this->group << '\n';
 }
@@ -89,4 +101,15 @@ void Student::erase_grade(const std::string &discipline)
 			return;
 		}
 	}
+}
+
+void Student::operator+=(std::pair<std::string, Grade> discipline_grade)
+{
+	this->set_grade(std::move(discipline_grade.first),
+	                discipline_grade.second);
+}
+
+void Student::operator-=(const std::string &discipline)
+{
+	this->erase_grade(discipline);
 }
